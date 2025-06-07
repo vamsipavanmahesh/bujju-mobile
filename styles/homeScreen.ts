@@ -213,4 +213,21 @@ export const homeScreenStyles = StyleSheet.create({
     flex: 1,
     width: '100%',
   },
+  loadingContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1C1C1E',
+    borderRadius: 16,
+    padding: 32,
+    maxWidth: 320,
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#2C2C2E',
+  },
+  loadingText: {
+    fontSize: 16,
+    color: '#8E8E93',
+    textAlign: 'center',
+    fontWeight: '400',
+  },
 });

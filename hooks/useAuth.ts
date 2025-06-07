@@ -46,25 +46,18 @@ export const useAuth = () => {
       if (storedAuthData) {
         console.log('💾 Found stored authentication data');
         
-        // Verify token is still valid
-        const isTokenValid = await authService.verifyToken(storedAuthData.token);
+        // Set user as authenticated (token validity will be checked on API calls)
+        console.log('✅ Using stored authentication data');
+        setAuthState(prev => ({
+          ...prev,
+          user: storedAuthData.user,
+          isSignedIn: true,
+        }));
         
-        if (isTokenValid) {
-          console.log('✅ Stored token is valid, user is authenticated');
-          setAuthState(prev => ({
-            ...prev,
-            user: storedAuthData.user,
-            isSignedIn: true,
-          }));
-          
-          // Get Google tokens if available
-          const googleTokens = await authService.getGoogleTokens();
-          if (googleTokens) {
-            setAuthState(prev => ({ ...prev, tokens: googleTokens }));
-          }
-        } else {
-          console.log('❌ Stored token is invalid, clearing data');
-          await authService.clearStoredAuth();
+        // Get Google tokens if available
+        const googleTokens = await authService.getGoogleTokens();
+        if (googleTokens) {
+          setAuthState(prev => ({ ...prev, tokens: googleTokens }));
         }
       } else {
         console.log('🔍 No stored authentication found, checking Google Sign-In status');

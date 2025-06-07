@@ -45,29 +45,7 @@ class AuthService {
     }
   }
 
-  /**
-   * Verify JWT token with backend
-   */
-  async verifyToken(token: string): Promise<boolean> {
-    try {
-      console.log('🔒 Verifying JWT token with backend...');
-      
-      const response = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.TOKEN_VERIFY}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      
-      const isValid = response.ok;
-      console.log(`Token verification result: ${isValid ? 'VALID' : 'INVALID'}`);
-      return isValid;
-    } catch (error) {
-      console.log('❌ Error verifying token:', error);
-      return false;
-    }
-  }
+
 
   /**
    * Clear stored authentication data

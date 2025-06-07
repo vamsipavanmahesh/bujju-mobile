@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { ConnectionsManager } from '../../components/ConnectionsManager';
 import ProfileDrawer from '../../components/ProfileDrawer';
 import { useAuth } from '../../hooks/useAuth';
+import { useOnboarding } from '../../hooks/useOnboarding';
 import { homeScreenStyles } from '../../styles/homeScreen';
 
 export default function HomeScreen() {
+  const router = useRouter();
   const {
     user,
     isSignedIn,
@@ -18,8 +21,53 @@ export default function HomeScreen() {
     showJWTToken,
   } = useAuth();
 
+  const { checkOnboardingStatus } = useOnboarding();
   const [activeTab, setActiveTab] = useState<'actions' | 'connections'>('actions');
   const [showProfileDrawer, setShowProfileDrawer] = useState(false);
+  const [onboardingChecked, setOnboardingChecked] = useState(false);
+  const [isCheckingOnboarding, setIsCheckingOnboarding] = useState(false);
+
+  // Check onboarding status when user is signed in
+  useEffect(() => {
+    const checkOnboarding = async () => {
+      // Only check if user is signed in, not currently loading auth, haven't checked yet, and not currently checking
+      if (isSignedIn && !isLoading && !onboardingChecked && !isCheckingOnboarding && user) {
+        try {
+          setIsCheckingOnboarding(true);
+          console.log('🔄 Checking onboarding status on app load...');
+          console.log('User ID:', user.id, 'Email:', user.email);
+          
+          const result = await checkOnboardingStatus();
+          
+          if (result.needsSetup) {
+            console.log('📱 Redirecting to notification time setup...');
+            router.replace('/notification-time-setup');
+          } else {
+            console.log('✅ Onboarding already completed');
+          }
+        } catch (error) {
+          console.log('❌ Error during onboarding check:', error);
+          // On error, assume onboarding is needed to be safe
+          console.log('⚠️ Due to error, redirecting to notification setup as safety measure');
+          router.replace('/notification-time-setup');
+        } finally {
+          setOnboardingChecked(true);
+          setIsCheckingOnboarding(false);
+        }
+      }
+    };
+
+    checkOnboarding();
+  }, [isSignedIn, isLoading, onboardingChecked, isCheckingOnboarding, user]);
+
+  // Reset onboarding check status when user signs out
+  useEffect(() => {
+    if (!isSignedIn) {
+      console.log('🔄 User signed out, resetting onboarding check status');
+      setOnboardingChecked(false);
+      setIsCheckingOnboarding(false);
+    }
+  }, [isSignedIn]);
 
   const renderHeader = () => (
     <View style={homeScreenStyles.headerContainer}>
@@ -176,6 +224,17 @@ export default function HomeScreen() {
       <View style={homeScreenStyles.container}>
         <Text style={homeScreenStyles.title}>Bujj Mobile</Text>
         {renderSignInView()}
+      </View>
+    );
+  }
+
+  // Show loading while checking onboarding status
+  if (!onboardingChecked || isCheckingOnboarding) {
+    return (
+      <View style={homeScreenStyles.container}>
+        <View style={homeScreenStyles.loadingContainer}>
+          <Text style={homeScreenStyles.loadingText}>Setting up your experience...</Text>
+        </View>
       </View>
     );
   }

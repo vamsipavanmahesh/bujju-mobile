@@ -12,11 +12,16 @@ export const API_CONFIG = {
   ENDPOINTS: {
     // Authentication endpoints
     GOOGLE_AUTH: '/auth/google',
-    TOKEN_VERIFY: '/auth/verify',
     
     // Connections endpoints
     CONNECTIONS: '/connections',
     CONNECTION_BY_ID: (id: number) => `/connections/${id}`,
+    
+    // Onboarding endpoints
+    ONBOARDING: '/onboarding',
+    
+    // User preferences endpoints
+    USER_PREFERENCES: '/user_preferences',
   },
   
   // Storage keys for AsyncStorage
