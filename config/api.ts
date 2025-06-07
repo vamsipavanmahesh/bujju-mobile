@@ -10,8 +10,13 @@ export const API_CONFIG = {
   // BASE_URL: 'https://your-production-domain.com/api/v1',
   
   ENDPOINTS: {
+    // Authentication endpoints
     GOOGLE_AUTH: '/auth/google',
     TOKEN_VERIFY: '/auth/verify',
+    
+    // Friends endpoints
+    FRIENDS: '/friends',
+    FRIEND_BY_ID: (id: number) => `/friends/${id}`,
   },
   
   // Storage keys for AsyncStorage

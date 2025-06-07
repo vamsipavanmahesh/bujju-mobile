@@ -1,5 +1,6 @@
-import React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { FriendsManager } from '../../components/FriendsManager';
 import { useAuth } from '../../hooks/useAuth';
 import { homeScreenStyles } from '../../styles/homeScreen';
 
@@ -16,55 +17,108 @@ export default function HomeScreen() {
     showJWTToken,
   } = useAuth();
 
-  const renderSignedInView = () => (
-    <View style={homeScreenStyles.userContainer}>
-      {user?.avatar_url && (
-        <Image source={{ uri: user.avatar_url }} style={homeScreenStyles.avatar} />
-      )}
-      <Text style={homeScreenStyles.userName}>{user?.name}</Text>
-      <Text style={homeScreenStyles.userEmail}>{user?.email}</Text>
-      <Text style={homeScreenStyles.userId}>User ID: {user?.id}</Text>
-      
-      <TouchableOpacity 
-        style={homeScreenStyles.tokenButton} 
-        onPress={toggleTokenVisibility}
+  const [activeTab, setActiveTab] = useState<'profile' | 'friends'>('profile');
+
+  const renderTabButtons = () => (
+    <View style={homeScreenStyles.tabContainer}>
+      <TouchableOpacity
+        style={[
+          homeScreenStyles.tabButton,
+          activeTab === 'profile' && homeScreenStyles.activeTabButton,
+        ]}
+        onPress={() => setActiveTab('profile')}
       >
-        <Text style={homeScreenStyles.buttonText}>
-          {showTokens ? 'Hide Tokens' : 'Show JWT & OAuth Tokens'}
+        <Text
+          style={[
+            homeScreenStyles.tabButtonText,
+            activeTab === 'profile' && homeScreenStyles.activeTabButtonText,
+          ]}
+        >
+          👤 Profile
         </Text>
       </TouchableOpacity>
       
-      {showTokens && (
-        <View style={homeScreenStyles.tokenContainer}>
-          <Text style={homeScreenStyles.tokenTitle}>Authentication Tokens:</Text>
-          
-          <TouchableOpacity 
-            style={homeScreenStyles.tokenViewButton}
-            onPress={showJWTToken}
-          >
-            <Text style={homeScreenStyles.tokenButtonText}>View JWT Token</Text>
-          </TouchableOpacity>
-          
-          {tokens && (
-            <>
-              <Text style={homeScreenStyles.tokenText}>
-                Google Access Token: {tokens.accessToken?.substring(0, 50)}...
-              </Text>
-              <Text style={homeScreenStyles.tokenText}>
-                Google ID Token: {tokens.idToken?.substring(0, 50)}...
-              </Text>
-            </>
-          )}
-          
-          <Text style={homeScreenStyles.tokenNote}>
-            (Full tokens logged to console)
-          </Text>
-        </View>
-      )}
-      
-      <TouchableOpacity style={homeScreenStyles.signOutButton} onPress={signOut}>
-        <Text style={homeScreenStyles.buttonText}>Sign Out</Text>
+      <TouchableOpacity
+        style={[
+          homeScreenStyles.tabButton,
+          activeTab === 'friends' && homeScreenStyles.activeTabButton,
+        ]}
+        onPress={() => setActiveTab('friends')}
+      >
+        <Text
+          style={[
+            homeScreenStyles.tabButtonText,
+            activeTab === 'friends' && homeScreenStyles.activeTabButtonText,
+          ]}
+        >
+          👥 Friends
+        </Text>
       </TouchableOpacity>
+    </View>
+  );
+
+  const renderProfileView = () => (
+    <ScrollView style={homeScreenStyles.contentContainer} showsVerticalScrollIndicator={false}>
+      <View style={homeScreenStyles.userContainer}>
+        {user?.avatar_url && (
+          <Image source={{ uri: user.avatar_url }} style={homeScreenStyles.avatar} />
+        )}
+        <Text style={homeScreenStyles.userName}>{user?.name}</Text>
+        <Text style={homeScreenStyles.userEmail}>{user?.email}</Text>
+        <Text style={homeScreenStyles.userId}>User ID: {user?.id}</Text>
+        
+        <TouchableOpacity 
+          style={homeScreenStyles.tokenButton} 
+          onPress={toggleTokenVisibility}
+        >
+          <Text style={homeScreenStyles.buttonText}>
+            {showTokens ? 'Hide Tokens' : 'Show JWT & OAuth Tokens'}
+          </Text>
+        </TouchableOpacity>
+        
+        {showTokens && (
+          <View style={homeScreenStyles.tokenContainer}>
+            <Text style={homeScreenStyles.tokenTitle}>Authentication Tokens:</Text>
+            
+            <TouchableOpacity 
+              style={homeScreenStyles.tokenViewButton}
+              onPress={showJWTToken}
+            >
+              <Text style={homeScreenStyles.tokenButtonText}>View JWT Token</Text>
+            </TouchableOpacity>
+            
+            {tokens && (
+              <>
+                <Text style={homeScreenStyles.tokenText}>
+                  Google Access Token: {tokens.accessToken?.substring(0, 50)}...
+                </Text>
+                <Text style={homeScreenStyles.tokenText}>
+                  Google ID Token: {tokens.idToken?.substring(0, 50)}...
+                </Text>
+              </>
+            )}
+            
+            <Text style={homeScreenStyles.tokenNote}>
+              (Full tokens logged to console)
+            </Text>
+          </View>
+        )}
+        
+        <TouchableOpacity style={homeScreenStyles.signOutButton} onPress={signOut}>
+          <Text style={homeScreenStyles.buttonText}>Sign Out</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
+  );
+
+  const renderFriendsView = () => (
+    <FriendsManager isSignedIn={isSignedIn} />
+  );
+
+  const renderSignedInView = () => (
+    <View style={homeScreenStyles.container}>
+      {renderTabButtons()}
+      {activeTab === 'profile' ? renderProfileView() : renderFriendsView()}
     </View>
   );
 
@@ -86,11 +140,19 @@ export default function HomeScreen() {
     </View>
   );
 
+  if (!isSignedIn) {
+    return (
+      <View style={homeScreenStyles.container}>
+        <Text style={homeScreenStyles.title}>Bujj Mobile - Backend Auth</Text>
+        {renderSignInView()}
+      </View>
+    );
+  }
+
   return (
     <View style={homeScreenStyles.container}>
-      <Text style={homeScreenStyles.title}>Bujj Mobile - Backend Auth</Text>
-      
-      {isSignedIn ? renderSignedInView() : renderSignInView()}
+      <Text style={homeScreenStyles.title}>Welcome back!</Text>
+      {renderSignedInView()}
     </View>
   );
 }
