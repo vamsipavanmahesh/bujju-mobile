@@ -390,16 +390,6 @@ export const ConnectionsManager: React.FC<ConnectionsManagerProps> = ({ isSigned
 
   return (
     <View style={connectionsStyles.container}>
-      {/* Header */}
-      <View style={connectionsStyles.header}>
-        <View style={connectionsStyles.headerContent}>
-          <Text style={connectionsStyles.headerTitle}>Connections</Text>
-          <Text style={connectionsStyles.headerSubtitle}>
-            {connectionsCount} {connectionsCount === 1 ? 'connection' : 'connections'}
-          </Text>
-        </View>
-      </View>
-
       {/* Content */}
       {isLoading && !hasConnections ? (
         renderLoading()
