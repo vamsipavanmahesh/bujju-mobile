@@ -135,7 +135,7 @@ const FriendEditModal: React.FC<EditModalProps> = ({
               disabled={isLoading}
             >
               {isLoading ? (
-                <ActivityIndicator color="#fff" size="small" />
+                <ActivityIndicator color="#fff\" size="small" />
               ) : (
                 <Text style={[friendsStyles.modalButtonText, friendsStyles.saveButtonText]}>
                   {isEditing ? 'Update' : 'Add'}
