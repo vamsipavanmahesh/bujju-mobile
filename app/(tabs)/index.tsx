@@ -34,7 +34,7 @@ export default function HomeScreen() {
             activeTab === 'profile' && homeScreenStyles.activeTabButtonText,
           ]}
         >
-          👤 Profile
+          Profile
         </Text>
       </TouchableOpacity>
       
@@ -51,7 +51,7 @@ export default function HomeScreen() {
             activeTab === 'friends' && homeScreenStyles.activeTabButtonText,
           ]}
         >
-          👥 Friends
+          Friends
         </Text>
       </TouchableOpacity>
     </View>
@@ -65,20 +65,20 @@ export default function HomeScreen() {
         )}
         <Text style={homeScreenStyles.userName}>{user?.name}</Text>
         <Text style={homeScreenStyles.userEmail}>{user?.email}</Text>
-        <Text style={homeScreenStyles.userId}>User ID: {user?.id}</Text>
+        <Text style={homeScreenStyles.userId}>ID: {user?.id}</Text>
         
         <TouchableOpacity 
           style={homeScreenStyles.tokenButton} 
           onPress={toggleTokenVisibility}
         >
           <Text style={homeScreenStyles.buttonText}>
-            {showTokens ? 'Hide Tokens' : 'Show JWT & OAuth Tokens'}
+            {showTokens ? 'Hide Tokens' : 'Show Tokens'}
           </Text>
         </TouchableOpacity>
         
         {showTokens && (
           <View style={homeScreenStyles.tokenContainer}>
-            <Text style={homeScreenStyles.tokenTitle}>Authentication Tokens:</Text>
+            <Text style={homeScreenStyles.tokenTitle}>Authentication Tokens</Text>
             
             <TouchableOpacity 
               style={homeScreenStyles.tokenViewButton}
@@ -90,16 +90,16 @@ export default function HomeScreen() {
             {tokens && (
               <>
                 <Text style={homeScreenStyles.tokenText}>
-                  Google Access Token: {tokens.accessToken?.substring(0, 50)}...
+                  Access Token: {tokens.accessToken?.substring(0, 40)}...
                 </Text>
                 <Text style={homeScreenStyles.tokenText}>
-                  Google ID Token: {tokens.idToken?.substring(0, 50)}...
+                  ID Token: {tokens.idToken?.substring(0, 40)}...
                 </Text>
               </>
             )}
             
             <Text style={homeScreenStyles.tokenNote}>
-              (Full tokens logged to console)
+              Full tokens logged to console
             </Text>
           </View>
         )}
@@ -143,7 +143,7 @@ export default function HomeScreen() {
   if (!isSignedIn) {
     return (
       <View style={homeScreenStyles.container}>
-        <Text style={homeScreenStyles.title}>Bujj Mobile - Backend Auth</Text>
+        <Text style={homeScreenStyles.title}>Bujj Mobile</Text>
         {renderSignInView()}
       </View>
     );

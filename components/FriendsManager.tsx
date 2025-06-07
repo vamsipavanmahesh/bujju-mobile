@@ -80,7 +80,7 @@ const FriendEditModal: React.FC<EditModalProps> = ({
       <View style={friendsStyles.modalOverlay}>
         <View style={friendsStyles.modalContainer}>
           <Text style={friendsStyles.modalTitle}>
-            {isEditing ? 'Edit Friend' : 'Add New Friend'}
+            {isEditing ? 'Edit Friend' : 'Add Friend'}
           </Text>
 
           <View style={friendsStyles.inputContainer}>
@@ -93,7 +93,7 @@ const FriendEditModal: React.FC<EditModalProps> = ({
               value={name}
               onChangeText={setName}
               placeholder="Enter friend's name"
-              placeholderTextColor="rgba(255, 255, 255, 0.4)"
+              placeholderTextColor="#8E8E93"
               onFocus={() => setNameFocused(true)}
               onBlur={() => setNameFocused(false)}
               editable={!isLoading}
@@ -110,7 +110,7 @@ const FriendEditModal: React.FC<EditModalProps> = ({
               value={phone}
               onChangeText={setPhone}
               placeholder="Enter phone number"
-              placeholderTextColor="rgba(255, 255, 255, 0.4)"
+              placeholderTextColor="#8E8E93"
               keyboardType="phone-pad"
               onFocus={() => setPhoneFocused(true)}
               onBlur={() => setPhoneFocused(false)}
@@ -138,7 +138,7 @@ const FriendEditModal: React.FC<EditModalProps> = ({
                 <ActivityIndicator color="#fff" size="small" />
               ) : (
                 <Text style={[friendsStyles.modalButtonText, friendsStyles.saveButtonText]}>
-                  {isEditing ? 'Update' : 'Add Friend'}
+                  {isEditing ? 'Update' : 'Add'}
                 </Text>
               )}
             </TouchableOpacity>
@@ -300,7 +300,7 @@ export const FriendsManager: React.FC<FriendsManagerProps> = ({ isSignedIn }) =>
   const renderEmptyState = () => (
     <View style={friendsStyles.emptyState}>
       <Text style={friendsStyles.emptyStateIcon}>👥</Text>
-      <Text style={friendsStyles.emptyStateText}>No friends yet!</Text>
+      <Text style={friendsStyles.emptyStateText}>No friends yet</Text>
       <Text style={friendsStyles.emptyStateSubtext}>
         Add your first friend to get started with managing your contacts.
       </Text>
@@ -338,7 +338,7 @@ export const FriendsManager: React.FC<FriendsManagerProps> = ({ isSignedIn }) =>
           </View>
         </View>
         <View style={friendsStyles.loadingContainer}>
-          <ActivityIndicator size="large" color="#ff6b6b" />
+          <ActivityIndicator size="large" color="#007AFF" />
           <Text style={friendsStyles.loadingText}>Loading friends...</Text>
         </View>
       </View>
@@ -372,8 +372,8 @@ export const FriendsManager: React.FC<FriendsManagerProps> = ({ isSignedIn }) =>
             <RefreshControl
               refreshing={isLoading}
               onRefresh={handleRefresh}
-              colors={['#ff6b6b']}
-              tintColor="#ff6b6b"
+              colors={['#007AFF']}
+              tintColor="#007AFF"
             />
           }
         />
@@ -402,4 +402,4 @@ export const FriendsManager: React.FC<FriendsManagerProps> = ({ isSignedIn }) =>
       />
     </View>
   );
-}; 
+};
