@@ -1,4 +1,4 @@
-// Friends Manager Component - Complete CRUD interface for friends
+// Ultra-Modern Friends Manager Component - 2025 Design
 import React, { useState } from 'react';
 import {
     ActivityIndicator,
@@ -32,7 +32,7 @@ interface FriendsManagerProps {
   isSignedIn: boolean;
 }
 
-// Modal for adding/editing friends
+// Modern Modal for adding/editing friends
 const FriendEditModal: React.FC<EditModalProps> = ({
   visible,
   friend,
@@ -57,11 +57,11 @@ const FriendEditModal: React.FC<EditModalProps> = ({
 
   const handleSave = () => {
     if (!name.trim()) {
-      Alert.alert('Error', 'Please enter a name for your friend.');
+      Alert.alert('Missing Information', 'Please enter a name for your friend.');
       return;
     }
     if (!phone.trim()) {
-      Alert.alert('Error', 'Please enter a phone number for your friend.');
+      Alert.alert('Missing Information', 'Please enter a phone number for your friend.');
       return;
     }
 
@@ -93,6 +93,7 @@ const FriendEditModal: React.FC<EditModalProps> = ({
               value={name}
               onChangeText={setName}
               placeholder="Enter friend's name"
+              placeholderTextColor="rgba(255, 255, 255, 0.4)"
               onFocus={() => setNameFocused(true)}
               onBlur={() => setNameFocused(false)}
               editable={!isLoading}
@@ -109,6 +110,7 @@ const FriendEditModal: React.FC<EditModalProps> = ({
               value={phone}
               onChangeText={setPhone}
               placeholder="Enter phone number"
+              placeholderTextColor="rgba(255, 255, 255, 0.4)"
               keyboardType="phone-pad"
               onFocus={() => setPhoneFocused(true)}
               onBlur={() => setPhoneFocused(false)}
@@ -184,14 +186,14 @@ const FriendCard: React.FC<FriendCardProps> = ({ friend, onEdit, onDelete }) => 
             style={[friendsStyles.actionButton, friendsStyles.editButton]}
             onPress={() => onEdit(friend)}
           >
-            <Text>✏️</Text>
+            <Text style={friendsStyles.editButtonIcon}>✏️</Text>
           </TouchableOpacity>
           
           <TouchableOpacity
             style={[friendsStyles.actionButton, friendsStyles.deleteButton]}
             onPress={() => onDelete(friend.id, friend.name)}
           >
-            <Text>🗑️</Text>
+            <Text style={friendsStyles.deleteButtonIcon}>🗑️</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -223,10 +225,13 @@ export const FriendsManager: React.FC<FriendsManagerProps> = ({ isSignedIn }) =>
     return (
       <View style={friendsStyles.container}>
         <View style={friendsStyles.header}>
-          <Text style={friendsStyles.headerTitle}>Friends</Text>
-          <Text style={friendsStyles.headerSubtitle}>Authentication required</Text>
+          <View style={friendsStyles.headerContent}>
+            <Text style={friendsStyles.headerTitle}>Friends</Text>
+            <Text style={friendsStyles.headerSubtitle}>Authentication required</Text>
+          </View>
         </View>
         <View style={friendsStyles.emptyState}>
+          <Text style={friendsStyles.emptyStateIcon}>👥</Text>
           <Text style={friendsStyles.emptyStateText}>Please sign in to manage your friends</Text>
           <Text style={friendsStyles.emptyStateSubtext}>
             Switch to the Profile tab and sign in with Google to access your friends list.
@@ -294,16 +299,16 @@ export const FriendsManager: React.FC<FriendsManagerProps> = ({ isSignedIn }) =>
 
   const renderEmptyState = () => (
     <View style={friendsStyles.emptyState}>
+      <Text style={friendsStyles.emptyStateIcon}>👥</Text>
       <Text style={friendsStyles.emptyStateText}>No friends yet!</Text>
       <Text style={friendsStyles.emptyStateSubtext}>
         Add your first friend to get started with managing your contacts.
       </Text>
       <TouchableOpacity
-        style={friendsStyles.addButton}
+        style={friendsStyles.emptyAddButton}
         onPress={handleAddFriend}
       >
-        <Text>➕</Text>
-        <Text style={friendsStyles.addButtonText}>Add Your First Friend</Text>
+        <Text style={friendsStyles.emptyAddButtonText}>Add Your First Friend</Text>
       </TouchableOpacity>
     </View>
   );
@@ -327,11 +332,13 @@ export const FriendsManager: React.FC<FriendsManagerProps> = ({ isSignedIn }) =>
     return (
       <View style={friendsStyles.container}>
         <View style={friendsStyles.header}>
-          <Text style={friendsStyles.headerTitle}>Friends</Text>
-          <Text style={friendsStyles.headerSubtitle}>Loading your friends...</Text>
+          <View style={friendsStyles.headerContent}>
+            <Text style={friendsStyles.headerTitle}>Friends</Text>
+            <Text style={friendsStyles.headerSubtitle}>Loading your friends...</Text>
+          </View>
         </View>
         <View style={friendsStyles.loadingContainer}>
-          <ActivityIndicator size="large" color="#007AFF" />
+          <ActivityIndicator size="large" color="#ff6b6b" />
           <Text style={friendsStyles.loadingText}>Loading friends...</Text>
         </View>
       </View>
@@ -340,24 +347,15 @@ export const FriendsManager: React.FC<FriendsManagerProps> = ({ isSignedIn }) =>
 
   return (
     <View style={friendsStyles.container}>
-      {/* Header */}
+      {/* Modern Header */}
       <View style={friendsStyles.header}>
-        <Text style={friendsStyles.headerTitle}>Friends</Text>
-        <Text style={friendsStyles.headerSubtitle}>
-          {friendsCount === 0 ? 'No friends yet' : `${friendsCount} friend${friendsCount === 1 ? '' : 's'}`}
-        </Text>
+        <View style={friendsStyles.headerContent}>
+          <Text style={friendsStyles.headerTitle}>Friends</Text>
+          <Text style={friendsStyles.headerSubtitle}>
+            {friendsCount === 0 ? 'No friends yet' : `${friendsCount} friend${friendsCount === 1 ? '' : 's'}`}
+          </Text>
+        </View>
       </View>
-
-      {/* Add Friend Button */}
-      {hasFriends && (
-        <TouchableOpacity
-          style={friendsStyles.addButton}
-          onPress={handleAddFriend}
-        >
-          <Text>➕</Text>
-          <Text style={friendsStyles.addButtonText}>Add Friend</Text>
-        </TouchableOpacity>
-      )}
 
       {/* Error Display */}
       {error && renderError()}
@@ -374,14 +372,22 @@ export const FriendsManager: React.FC<FriendsManagerProps> = ({ isSignedIn }) =>
             <RefreshControl
               refreshing={isLoading}
               onRefresh={handleRefresh}
-              colors={['#007AFF']}
-              tintColor="#007AFF"
+              colors={['#ff6b6b']}
+              tintColor="#ff6b6b"
             />
           }
         />
       ) : !isLoading && !error ? (
         renderEmptyState()
       ) : null}
+
+      {/* Floating Action Button */}
+      <TouchableOpacity
+        style={friendsStyles.addButton}
+        onPress={handleAddFriend}
+      >
+        <Text style={friendsStyles.addButtonIcon}>+</Text>
+      </TouchableOpacity>
 
       {/* Add/Edit Modal */}
       <FriendEditModal
