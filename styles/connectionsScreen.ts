@@ -19,7 +19,7 @@ const getCardWidth = () => {
   }
 };
 
-export const friendsStyles = StyleSheet.create({
+export const connectionsStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000000',
@@ -69,13 +69,13 @@ export const friendsStyles = StyleSheet.create({
     color: '#ffffff',
     fontWeight: '300',
   },
-  friendsList: {
+  connectionsList: {
     flex: 1,
     paddingHorizontal: 24,
     paddingTop: 16,
     paddingBottom: 100,
   },
-  friendCard: {
+  connectionCard: {
     backgroundColor: '#1C1C1E',
     padding: 16,
     marginBottom: 8,
@@ -86,26 +86,26 @@ export const friendsStyles = StyleSheet.create({
     alignSelf: 'center',
     width: getCardWidth(),
   },
-  friendCardHeader: {
+  connectionCardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     minHeight: 40,
   },
-  friendHeader: {
+  connectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     minHeight: 40,
   },
-  friendInfo: {
+  connectionInfo: {
     flex: 1,
     marginRight: 12,
     justifyContent: 'center',
     flexDirection: 'column',
     alignItems: 'flex-start',
   },
-  friendName: {
+  connectionName: {
     fontSize: 16,
     fontWeight: '600',
     color: '#FFFFFF',
@@ -114,15 +114,23 @@ export const friendsStyles = StyleSheet.create({
     textAlign: 'left',
     marginBottom: 4,
   },
-  friendPhone: {
+  connectionPhone: {
     fontSize: 14,
     color: '#8E8E93',
     fontWeight: '400',
     lineHeight: 18,
     textAlign: 'left',
   },
-
-  friendActions: {
+  connectionRelationship: {
+    fontSize: 12,
+    color: '#007AFF',
+    fontWeight: '500',
+    lineHeight: 16,
+    textAlign: 'left',
+    marginTop: 2,
+    textTransform: 'capitalize',
+  },
+  connectionActions: {
     flexDirection: 'row',
     gap: 8,
   },
@@ -243,8 +251,9 @@ export const friendsStyles = StyleSheet.create({
     backgroundColor: '#1C1C1E',
     borderRadius: 16,
     padding: 24,
-    width: width - 48,
-    maxWidth: 360,
+    width: '100%',
+    maxWidth: 400,
+    maxHeight: '80%',
     borderWidth: 1,
     borderColor: '#2C2C2E',
   },
@@ -252,9 +261,12 @@ export const friendsStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
     color: '#ffffff',
-    marginBottom: 24,
     textAlign: 'center',
+    marginBottom: 24,
     letterSpacing: -0.3,
+  },
+  modalContent: {
+    maxHeight: 300,
   },
   inputContainer: {
     marginBottom: 20,
@@ -264,23 +276,65 @@ export const friendsStyles = StyleSheet.create({
     fontWeight: '500',
     color: '#ffffff',
     marginBottom: 8,
+    letterSpacing: -0.1,
   },
   textInput: {
-    borderWidth: 1,
-    borderColor: '#2C2C2E',
-    borderRadius: 10,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 16,
     backgroundColor: '#2C2C2E',
+    borderRadius: 10,
+    padding: 16,
+    fontSize: 16,
     color: '#ffffff',
-    fontWeight: '400',
-    height: 44,
+    borderWidth: 1,
+    borderColor: '#3A3A3C',
+    minHeight: 48,
   },
   textInputFocused: {
     borderColor: '#007AFF',
-    backgroundColor: '#1C1C1E',
+    backgroundColor: '#2C2C2E',
   },
+  
+  // Relationship Picker Styles
+  relationshipPicker: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  relationshipPickerText: {
+    fontSize: 16,
+    color: '#ffffff',
+    flex: 1,
+  },
+  relationshipPickerArrow: {
+    fontSize: 12,
+    color: '#8E8E93',
+    marginLeft: 8,
+  },
+  relationshipOptions: {
+    backgroundColor: '#2C2C2E',
+    borderRadius: 10,
+    marginTop: 8,
+    borderWidth: 1,
+    borderColor: '#3A3A3C',
+    maxHeight: 200,
+  },
+  relationshipOption: {
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#3A3A3C',
+  },
+  relationshipOptionSelected: {
+    backgroundColor: '#007AFF',
+  },
+  relationshipOptionText: {
+    fontSize: 16,
+    color: '#ffffff',
+  },
+  relationshipOptionTextSelected: {
+    color: '#ffffff',
+    fontWeight: '500',
+  },
+  
+  // Modal Actions
   modalActions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -289,21 +343,22 @@ export const friendsStyles = StyleSheet.create({
   },
   modalButton: {
     flex: 1,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+    paddingVertical: 14,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 44,
+    minHeight: 48,
   },
   cancelButton: {
     backgroundColor: '#2C2C2E',
+    borderWidth: 1,
+    borderColor: '#3A3A3C',
   },
   saveButton: {
     backgroundColor: '#007AFF',
   },
   modalButtonText: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '500',
   },
   cancelButtonText: {

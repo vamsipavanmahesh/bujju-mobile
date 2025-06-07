@@ -1,22 +1,22 @@
 // API Configuration
 export const API_CONFIG = {
   // Update this URL to point to your actual Rails backend
+  // For local development, use:
   BASE_URL: 'http://localhost:3000/api/v1',
   
-  // If running backend locally for development, use:
-  // BASE_URL: 'http://localhost:3000/api/v1',
+  // For production, replace with your actual production domain:
+  // BASE_URL: 'https://your-actual-domain.com/api/v1',
   
-  // For production, replace with your production domain:
-  // BASE_URL: 'https://your-production-domain.com/api/v1',
+  // Note: Make sure your backend server is running and accessible
   
   ENDPOINTS: {
     // Authentication endpoints
     GOOGLE_AUTH: '/auth/google',
     TOKEN_VERIFY: '/auth/verify',
     
-    // Friends endpoints
-    FRIENDS: '/friends',
-    FRIEND_BY_ID: (id: number) => `/friends/${id}`,
+    // Connections endpoints
+    CONNECTIONS: '/connections',
+    CONNECTION_BY_ID: (id: number) => `/connections/${id}`,
   },
   
   // Storage keys for AsyncStorage

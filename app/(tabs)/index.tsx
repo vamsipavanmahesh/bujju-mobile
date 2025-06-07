@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { FriendsManager } from '../../components/FriendsManager';
+import { ConnectionsManager } from '../../components/ConnectionsManager';
 import ProfileDrawer from '../../components/ProfileDrawer';
 import { useAuth } from '../../hooks/useAuth';
 import { homeScreenStyles } from '../../styles/homeScreen';
@@ -18,7 +18,7 @@ export default function HomeScreen() {
     showJWTToken,
   } = useAuth();
 
-  const [activeTab, setActiveTab] = useState<'actions' | 'friends'>('actions');
+  const [activeTab, setActiveTab] = useState<'actions' | 'connections'>('actions');
   const [showProfileDrawer, setShowProfileDrawer] = useState(false);
 
   const renderHeader = () => (
@@ -60,17 +60,17 @@ export default function HomeScreen() {
       <TouchableOpacity
         style={[
           homeScreenStyles.tabButton,
-          activeTab === 'friends' && homeScreenStyles.activeTabButton,
+          activeTab === 'connections' && homeScreenStyles.activeTabButton,
         ]}
-        onPress={() => setActiveTab('friends')}
+        onPress={() => setActiveTab('connections')}
       >
         <Text
           style={[
             homeScreenStyles.tabButtonText,
-            activeTab === 'friends' && homeScreenStyles.activeTabButtonText,
+            activeTab === 'connections' && homeScreenStyles.activeTabButtonText,
           ]}
         >
-          Friends
+          Connections
         </Text>
       </TouchableOpacity>
     </View>
@@ -130,15 +130,15 @@ export default function HomeScreen() {
     </ScrollView>
   );
 
-  const renderFriendsView = () => (
-    <FriendsManager isSignedIn={isSignedIn} />
+  const renderConnectionsView = () => (
+    <ConnectionsManager isSignedIn={isSignedIn} />
   );
 
   const renderSignedInView = () => (
     <View style={homeScreenStyles.container}>
       {renderHeader()}
       {renderTabButtons()}
-      {activeTab === 'actions' ? renderActionsView() : renderFriendsView()}
+      {activeTab === 'actions' ? renderActionsView() : renderConnectionsView()}
       
       <ProfileDrawer
         visible={showProfileDrawer}
