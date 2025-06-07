@@ -2,6 +2,23 @@ import { Dimensions, StyleSheet } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
+// Responsive width calculation
+const getCardWidth = () => {
+  if (width < 350) {
+    // Small devices (iPhone SE, etc.) - use more of the screen
+    return width - 60; // 30px padding on each side
+  } else if (width < 400) {
+    // Medium devices (iPhone 12, 13, etc.)
+    return width - 80; // 40px padding on each side
+  } else if (width < 500) {
+    // Large phones (iPhone Pro Max, etc.)
+    return width - 100; // 50px padding on each side
+  } else {
+    // Tablets and very large screens
+    return Math.min(400, width - 120); // Cap at 400px with 60px padding each side
+  }
+};
+
 export const friendsStyles = StyleSheet.create({
   container: {
     flex: 1,
@@ -32,7 +49,7 @@ export const friendsStyles = StyleSheet.create({
   },
   addButton: {
     position: 'absolute',
-    bottom: 34,
+    bottom: 44,
     right: 24,
     width: 56,
     height: 56,
@@ -55,69 +72,81 @@ export const friendsStyles = StyleSheet.create({
   friendsList: {
     flex: 1,
     paddingHorizontal: 24,
-    paddingTop: 20,
+    paddingTop: 16,
     paddingBottom: 100,
   },
   friendCard: {
     backgroundColor: '#1C1C1E',
-    padding: 20,
-    marginBottom: 12,
-    borderRadius: 12,
+    padding: 16,
+    marginBottom: 8,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: '#2C2C2E',
+    minHeight: 60,
+    alignSelf: 'center',
+    width: getCardWidth(),
+  },
+  friendCardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    minHeight: 40,
   },
   friendHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'center',
+    minHeight: 40,
   },
   friendInfo: {
     flex: 1,
-    marginRight: 16,
+    marginRight: 12,
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   friendName: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: '600',
-    color: '#ffffff',
-    marginBottom: 4,
+    color: '#FFFFFF',
     letterSpacing: -0.2,
+    lineHeight: 20,
+    textAlign: 'left',
+    marginBottom: 4,
   },
   friendPhone: {
-    fontSize: 15,
-    color: '#007AFF',
-    marginBottom: 8,
-    fontWeight: '400',
-  },
-  friendDate: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#8E8E93',
     fontWeight: '400',
+    lineHeight: 18,
+    textAlign: 'left',
   },
+
   friendActions: {
     flexDirection: 'row',
     gap: 8,
   },
   actionButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#2C2C2E',
   },
   editButton: {
-    backgroundColor: '#34C759',
+    backgroundColor: '#2C2C2E',
   },
   editButtonIcon: {
-    fontSize: 16,
-    color: '#ffffff',
+    fontSize: 14,
+    color: '#8E8E93',
   },
   deleteButton: {
-    backgroundColor: '#FF3B30',
+    backgroundColor: '#2C2C2E',
   },
   deleteButtonIcon: {
-    fontSize: 16,
-    color: '#ffffff',
+    fontSize: 14,
+    color: '#8E8E93',
   },
   emptyState: {
     flex: 1,

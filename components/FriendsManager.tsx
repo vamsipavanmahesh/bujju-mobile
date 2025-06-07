@@ -157,28 +157,12 @@ interface FriendCardProps {
 }
 
 const FriendCard: React.FC<FriendCardProps> = ({ friend, onEdit, onDelete }) => {
-  const formatDate = (dateString: string) => {
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      });
-    } catch {
-      return 'Unknown';
-    }
-  };
-
   return (
     <View style={friendsStyles.friendCard}>
-      <View style={friendsStyles.friendHeader}>
+      <View style={friendsStyles.friendCardHeader}>
         <View style={friendsStyles.friendInfo}>
           <Text style={friendsStyles.friendName}>{friend.name}</Text>
           <Text style={friendsStyles.friendPhone}>{friend.phone}</Text>
-          <Text style={friendsStyles.friendDate}>
-            Added {formatDate(friend.created_at)}
-          </Text>
         </View>
         
         <View style={friendsStyles.friendActions}>
@@ -224,17 +208,11 @@ export const FriendsManager: React.FC<FriendsManagerProps> = ({ isSignedIn }) =>
   if (!isSignedIn) {
     return (
       <View style={friendsStyles.container}>
-        <View style={friendsStyles.header}>
-          <View style={friendsStyles.headerContent}>
-            <Text style={friendsStyles.headerTitle}>Friends</Text>
-            <Text style={friendsStyles.headerSubtitle}>Authentication required</Text>
-          </View>
-        </View>
         <View style={friendsStyles.emptyState}>
           <Text style={friendsStyles.emptyStateIcon}>👥</Text>
           <Text style={friendsStyles.emptyStateText}>Please sign in to manage your friends</Text>
           <Text style={friendsStyles.emptyStateSubtext}>
-            Switch to the Profile tab and sign in with Google to access your friends list.
+            Switch to the Actions tab and sign in with Google to access your friends list.
           </Text>
         </View>
       </View>
@@ -331,12 +309,6 @@ export const FriendsManager: React.FC<FriendsManagerProps> = ({ isSignedIn }) =>
   if (isLoading && !hasFriends) {
     return (
       <View style={friendsStyles.container}>
-        <View style={friendsStyles.header}>
-          <View style={friendsStyles.headerContent}>
-            <Text style={friendsStyles.headerTitle}>Friends</Text>
-            <Text style={friendsStyles.headerSubtitle}>Loading your friends...</Text>
-          </View>
-        </View>
         <View style={friendsStyles.loadingContainer}>
           <ActivityIndicator size="large" color="#007AFF" />
           <Text style={friendsStyles.loadingText}>Loading friends...</Text>
@@ -347,16 +319,6 @@ export const FriendsManager: React.FC<FriendsManagerProps> = ({ isSignedIn }) =>
 
   return (
     <View style={friendsStyles.container}>
-      {/* Modern Header */}
-      <View style={friendsStyles.header}>
-        <View style={friendsStyles.headerContent}>
-          <Text style={friendsStyles.headerTitle}>Friends</Text>
-          <Text style={friendsStyles.headerSubtitle}>
-            {friendsCount === 0 ? 'No friends yet' : `${friendsCount} friend${friendsCount === 1 ? '' : 's'}`}
-          </Text>
-        </View>
-      </View>
-
       {/* Error Display */}
       {error && renderError()}
 
@@ -381,13 +343,15 @@ export const FriendsManager: React.FC<FriendsManagerProps> = ({ isSignedIn }) =>
         renderEmptyState()
       ) : null}
 
-      {/* Floating Action Button */}
-      <TouchableOpacity
-        style={friendsStyles.addButton}
-        onPress={handleAddFriend}
-      >
-        <Text style={friendsStyles.addButtonIcon}>+</Text>
-      </TouchableOpacity>
+      {/* Floating Action Button - Only show when there are friends */}
+      {hasFriends && (
+        <TouchableOpacity
+          style={friendsStyles.addButton}
+          onPress={handleAddFriend}
+        >
+          <Text style={friendsStyles.addButtonIcon}>+</Text>
+        </TouchableOpacity>
+      )}
 
       {/* Add/Edit Modal */}
       <FriendEditModal

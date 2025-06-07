@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { FriendsManager } from '../../components/FriendsManager';
+import ProfileDrawer from '../../components/ProfileDrawer';
 import { useAuth } from '../../hooks/useAuth';
 import { homeScreenStyles } from '../../styles/homeScreen';
 
@@ -17,24 +18,42 @@ export default function HomeScreen() {
     showJWTToken,
   } = useAuth();
 
-  const [activeTab, setActiveTab] = useState<'profile' | 'friends'>('profile');
+  const [activeTab, setActiveTab] = useState<'actions' | 'friends'>('actions');
+  const [showProfileDrawer, setShowProfileDrawer] = useState(false);
+
+  const renderHeader = () => (
+    <View style={homeScreenStyles.headerContainer}>
+      {user?.avatar_url && (
+        <TouchableOpacity 
+          style={homeScreenStyles.profilePicContainer}
+          onPress={() => setShowProfileDrawer(true)}
+        >
+          <Image 
+            source={{ uri: user.avatar_url }} 
+            style={homeScreenStyles.headerAvatar} 
+          />
+        </TouchableOpacity>
+      )}
+      <Text style={homeScreenStyles.title}>Welcome back!</Text>
+    </View>
+  );
 
   const renderTabButtons = () => (
     <View style={homeScreenStyles.tabContainer}>
       <TouchableOpacity
         style={[
           homeScreenStyles.tabButton,
-          activeTab === 'profile' && homeScreenStyles.activeTabButton,
+          activeTab === 'actions' && homeScreenStyles.activeTabButton,
         ]}
-        onPress={() => setActiveTab('profile')}
+        onPress={() => setActiveTab('actions')}
       >
         <Text
           style={[
             homeScreenStyles.tabButtonText,
-            activeTab === 'profile' && homeScreenStyles.activeTabButtonText,
+            activeTab === 'actions' && homeScreenStyles.activeTabButtonText,
           ]}
         >
-          Profile
+          Actions
         </Text>
       </TouchableOpacity>
       
@@ -57,7 +76,7 @@ export default function HomeScreen() {
     </View>
   );
 
-  const renderProfileView = () => (
+  const renderActionsView = () => (
     <ScrollView style={homeScreenStyles.contentContainer} showsVerticalScrollIndicator={false}>
       <View style={homeScreenStyles.userContainer}>
         {user?.avatar_url && (
@@ -117,8 +136,20 @@ export default function HomeScreen() {
 
   const renderSignedInView = () => (
     <View style={homeScreenStyles.container}>
+      {renderHeader()}
       {renderTabButtons()}
-      {activeTab === 'profile' ? renderProfileView() : renderFriendsView()}
+      {activeTab === 'actions' ? renderActionsView() : renderFriendsView()}
+      
+      <ProfileDrawer
+        visible={showProfileDrawer}
+        onClose={() => setShowProfileDrawer(false)}
+        user={user!}
+        showTokens={showTokens}
+        onToggleTokens={toggleTokenVisibility}
+        onShowJWTToken={showJWTToken}
+        onSignOut={signOut}
+        tokens={tokens}
+      />
     </View>
   );
 
@@ -149,10 +180,5 @@ export default function HomeScreen() {
     );
   }
 
-  return (
-    <View style={homeScreenStyles.container}>
-      <Text style={homeScreenStyles.title}>Welcome back!</Text>
-      {renderSignedInView()}
-    </View>
-  );
+  return renderSignedInView();
 }

@@ -8,12 +8,34 @@ export const homeScreenStyles = StyleSheet.create({
     justifyContent: 'center',
     padding: 24,
   },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+    paddingTop: 60,
+    paddingBottom: 16,
+    width: '100%',
+    backgroundColor: '#000000',
+  },
+  profilePicContainer: {
+    padding: 2,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: '#2C2C2E',
+    marginRight: 12,
+  },
+  headerAvatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+  },
   title: {
     fontSize: 28,
     fontWeight: '600',
-    marginBottom: 8,
+    marginBottom: 0,
     color: '#ffffff',
-    textAlign: 'center',
+    textAlign: 'left',
     letterSpacing: -0.5,
   },
   description: {
@@ -189,5 +211,6 @@ export const homeScreenStyles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
+    width: '100%',
   },
 });
